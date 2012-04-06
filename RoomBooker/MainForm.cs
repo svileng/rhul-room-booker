@@ -133,15 +133,35 @@ namespace RoomBooker
 
         private void btnRun_Click(object sender, EventArgs e)
         {
-            try 
+            if (btnRun.Tag == "start")
             {
-                OutputMessage("Starting timer...");
-                startingTime = DateTime.Parse(dateTimePicker1.Text);
-                timer.Enabled = true;
-                timer.Start();
+                if (backgroundWorker.IsBusy)
+                {
+                    backgroundWorker.CancelAsync();
+                }
+
+                timer.Stop();
+                OutputMessage("System stopped by user.");
+
+                btnRun.Tag = "stop";
+                btnRun.Text = "Run";
             }
-            catch (Exception ex) {
-                MessageBox.Show(ex.Message);
+            else
+            {
+                try
+                {
+                    OutputMessage("Starting timer...");
+                    startingTime = DateTime.Parse(dateTimePicker.Text);
+                    timer.Enabled = true;
+                    timer.Start();
+
+                    btnRun.Tag = "start";
+                    btnRun.Text = "Stop";
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
         }
 
@@ -153,13 +173,6 @@ namespace RoomBooker
                 OutputMessage("Timer stopped; running automatic booker.");
                 RunBackgroundWorker();
             }
-        }
-
-        private void btnStop_Click(object sender, EventArgs e)
-        {
-            backgroundWorker.CancelAsync();
-            timer.Stop();
-            OutputMessage("System stopped by user.");
         }
 
         private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)

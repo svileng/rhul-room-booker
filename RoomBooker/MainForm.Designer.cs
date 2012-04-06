@@ -38,10 +38,9 @@
             this.label4 = new System.Windows.Forms.Label();
             this.txtLog = new System.Windows.Forms.TextBox();
             this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.label2 = new System.Windows.Forms.Label();
             this.timer = new System.Windows.Forms.Timer(this.components);
-            this.btnStop = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtPostData
@@ -65,7 +64,7 @@
             // 
             // btnRun
             // 
-            this.btnRun.Location = new System.Drawing.Point(154, 110);
+            this.btnRun.Location = new System.Drawing.Point(263, 110);
             this.btnRun.Name = "btnRun";
             this.btnRun.Size = new System.Drawing.Size(103, 34);
             this.btnRun.TabIndex = 2;
@@ -123,14 +122,14 @@
             this.backgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_DoWork);
             this.backgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_RunWorkerCompleted);
             // 
-            // dateTimePicker1
+            // dateTimePicker
             // 
-            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.dateTimePicker1.Location = new System.Drawing.Point(12, 124);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.ShowUpDown = true;
-            this.dateTimePicker1.Size = new System.Drawing.Size(126, 20);
-            this.dateTimePicker1.TabIndex = 10;
+            this.dateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dateTimePicker.Location = new System.Drawing.Point(12, 124);
+            this.dateTimePicker.Name = "dateTimePicker";
+            this.dateTimePicker.ShowUpDown = true;
+            this.dateTimePicker.Size = new System.Drawing.Size(126, 20);
+            this.dateTimePicker.TabIndex = 10;
             // 
             // label2
             // 
@@ -146,24 +145,13 @@
             this.timer.Interval = 500;
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
-            // btnStop
-            // 
-            this.btnStop.Location = new System.Drawing.Point(263, 110);
-            this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(103, 34);
-            this.btnStop.TabIndex = 12;
-            this.btnStop.Text = "Stop";
-            this.btnStop.UseVisualStyleBackColor = true;
-            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(378, 297);
-            this.Controls.Add(this.btnStop);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.dateTimePicker1);
+            this.Controls.Add(this.dateTimePicker);
             this.Controls.Add(this.txtLog);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -192,10 +180,9 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtLog;
         private System.ComponentModel.BackgroundWorker backgroundWorker;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.DateTimePicker dateTimePicker;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Timer timer;
-        private System.Windows.Forms.Button btnStop;
     }
 }
 
