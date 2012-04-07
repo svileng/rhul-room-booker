@@ -41,15 +41,19 @@ namespace RoomBooker
                 string bookingResponse = SendBookingRequest(bookingParams);
                 if (bookingResponse.Contains("<strong>Error</strong><br/>You may not make reservations more than 2 weeks in advance.<br/>"))
                 {
-                    throw new Exception("You may not make reservations more than 2 weeks in advance.");
+                    throw new Exception("Can't make reservation more than 2 weeks in advance.");
                 }
                 else if (bookingResponse.Contains("<strong>Error</strong><br/>Another room has been reserved during this time.<br/>You may only make 120 minutes worth of reservations per day.<br/>"))
                 {
-                    throw new Exception("Another room has been reserved / you already booked 120 mins for that day.");
+                    throw new Exception("You already booked 120 mins for that day.");
                 }
                 else if (bookingResponse.Contains("<strong>Error</strong><br/>Another room has been reserved during this time.<br/>"))
                 {
                     throw new Exception("Room is already reserved for this time.");
+                }
+                else if (!bookingResponse.Contains("Your reservation has been made!"))
+                {
+                    throw new Exception(bookingResponse);
                 }
             }
             else
@@ -110,21 +114,69 @@ namespace RoomBooker
 
         private void RunBackgroundWorker()
         {
-            string username = txtUsername.Text;
-            string password = txtPassword.Text;
-            string postData = txtPostData.Text;
-
-            string loginParams = "username=" + username + "&password=" + password + "&ajax_indicator=TRUE";
-            string bookingParams = "altusername=&emailconfirmation=&capacity=4&fullcapacity=8" + postData;
+            string loginParams = "username=" + txtUsername.Text + "&password=" + txtPassword.Text + "&ajax_indicator=TRUE";
+            string bookingParams = "altusername=&emailconfirmation=&capacity=4&fullcapacity=8&roomid=" + GetRoomIdFor(cbRoom.Text) + "&duration=" + GetDurationFor(cbDuration.Text) + "&starttime=" + txtStartTime.Text +"&preferredname=" + txtBookingName.Text;
 
             backgroundWorker.RunWorkerAsync(new string[] { loginParams, bookingParams });
         }
 
+        private string GetDurationFor(string duration)
+        {
+            int result;
+
+            switch (duration)
+            {
+                case "1 hour":
+                    result = 60;
+                    break;
+                case "2 hours":
+                    result = 120;
+                    break;
+                default:
+                    result = 0;
+                    break;
+            }
+
+            return result.ToString();
+        }
+
         private void OutputMessage(string msg)
         {
-            txtLog.Text += DateTime.Now.ToLongTimeString() + " - " + msg + "\r\n";
+            txtLog.Text += DateTime.Now.ToLongTimeString() + " " + msg + "\r\n";
             txtLog.SelectionStart = txtLog.TextLength;
             txtLog.ScrollToCaret();
+        }
+
+        private string GetRoomIdFor(string roomName)
+        {
+            int result;
+
+            switch (roomName)
+            {
+                case "Bedford 2-01":
+                    result = 29;
+                    break;
+                case "Bedford 2-01a":
+                    result = 30;
+                    break;
+                case "Bedford 1-05":
+                    result = 28;
+                    break;
+                case "Bedford 1-01":
+                    result = 27;
+                    break;
+                case "Bedford Level 3":
+                    result = 31;
+                    break;
+                case "Founder\'s Room 104":
+                    result = 32;
+                    break;
+                default:
+                    result = 0;
+                    break;
+            }
+            
+            return result.ToString();
         }
 
         #endregion
@@ -133,7 +185,7 @@ namespace RoomBooker
 
         private void btnRun_Click(object sender, EventArgs e)
         {
-            if (btnRun.Tag == "start")
+            if (btnRun.Text == "Stop")
             {
                 if (backgroundWorker.IsBusy)
                 {
@@ -143,7 +195,6 @@ namespace RoomBooker
                 timer.Stop();
                 OutputMessage("System stopped by user.");
 
-                btnRun.Tag = "stop";
                 btnRun.Text = "Run";
             }
             else
@@ -155,7 +206,6 @@ namespace RoomBooker
                     timer.Enabled = true;
                     timer.Start();
 
-                    btnRun.Tag = "start";
                     btnRun.Text = "Stop";
                 }
                 catch (Exception ex)
@@ -170,7 +220,7 @@ namespace RoomBooker
             if (DateTime.Compare(DateTime.Now, startingTime) >= 0)
             {
                 timer.Stop();
-                OutputMessage("Timer stopped; running automatic booker.");
+                OutputMessage("Running automatic booker.");
                 RunBackgroundWorker();
             }
         }
@@ -194,7 +244,7 @@ namespace RoomBooker
             if (e.Error != null || e.Cancelled)
             {
                 Exception ex = e.Error;
-                OutputMessage("Error: " + message);
+                OutputMessage(message);
 
                 if (message.Contains("weeks in advance") || message.Contains("request failed"))
                 {
@@ -205,14 +255,22 @@ namespace RoomBooker
                 else
                 {
                     OutputMessage("Stopping automatic booker...");
+                    btnRun.Text = "Run";
                 }
             }
             else
             {
                 OutputMessage("Room booked successfully!");
+                btnRun.Text = "Run";
             }
         }
 
         #endregion
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            cbRoom.SelectedIndex = 2;
+            cbDuration.SelectedIndex = 1;
+        }
     }
 }
