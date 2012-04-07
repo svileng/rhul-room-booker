@@ -228,9 +228,9 @@
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(194, 102);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(178, 13);
+            this.label8.Size = new System.Drawing.Size(35, 13);
             this.label8.TabIndex = 20;
-            this.label8.Text = "Name (a-z and digits only, no space)";
+            this.label8.Text = "Name";
             // 
             // MainForm
             // 

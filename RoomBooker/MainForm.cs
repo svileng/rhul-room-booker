@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Net;
 using System.IO;
+using System.Web;
 
 namespace RoomBooker
 {
@@ -115,7 +115,7 @@ namespace RoomBooker
         private void RunBackgroundWorker()
         {
             string loginParams = "username=" + txtUsername.Text + "&password=" + txtPassword.Text + "&ajax_indicator=TRUE";
-            string bookingParams = "altusername=&emailconfirmation=&capacity=4&fullcapacity=8&roomid=" + GetRoomIdFor(cbRoom.Text) + "&duration=" + GetDurationFor(cbDuration.Text) + "&starttime=" + txtStartTime.Text +"&preferredname=" + txtBookingName.Text;
+            string bookingParams = "altusername=&emailconfirmation=&capacity=4&fullcapacity=8&roomid=" + GetRoomIdFor(cbRoom.Text) + "&duration=" + GetDurationFor(cbDuration.Text) + "&starttime=" + txtStartTime.Text +"&preferredname=" + Uri.EscapeUriString(txtBookingName.Text);
 
             backgroundWorker.RunWorkerAsync(new string[] { loginParams, bookingParams });
         }
