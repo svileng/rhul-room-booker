@@ -1,6 +1,4 @@
 RHUL Room Booker
 ================
 
-A small C# application I created in my final year at uni, which guarantees booked rooms in the library by flooding the server with POST requests within a short period of time.
-
-Note: no, there's nothing illegal here :)
+A small C# application I created in my final year at uni, for booking rooms in the library. It guarantees room bookings by flooding the library server with POST requests, at the scheduled date and time.
